@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: powersub-core
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/powersub}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 3
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    open-in-view: false
+  liquibase:
+    change-log: classpath:/db/changelog.xml
+  mvc:
+    throw-exception-if-no-handler-found: true
+    servlet:
+      path: /api
+server:
+  port: 9010
