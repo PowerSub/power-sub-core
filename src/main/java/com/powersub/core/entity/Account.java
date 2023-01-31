@@ -11,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "accounts")
-public class AccountDAO {
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

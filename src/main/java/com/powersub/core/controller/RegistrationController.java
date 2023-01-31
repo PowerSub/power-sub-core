@@ -1,6 +1,7 @@
 package com.powersub.core.controller;
 
 import com.powersub.core.entity.AccountDTO;
+import com.powersub.core.exception.InvalidCredentialsException;
 import com.powersub.core.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,13 +21,15 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String GetCredentials(@RequestBody AccountDTO account) {
-        if (registrationService.isValidCredentials(account)) {
+    public String getCredentials(@RequestBody AccountDTO account) {
+
+        try {
             registrationService.register(account);
             return "New account registered successfully";
-        } else {
+        } catch (InvalidCredentialsException e) {
             return "Registration failed. Bad credentials!";
         }
+
     }
 
 
