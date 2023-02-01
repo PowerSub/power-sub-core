@@ -14,6 +14,7 @@ import javax.persistence.*;
 public class Account {
 
     @Id
+    @Column(name="account_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
