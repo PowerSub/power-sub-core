@@ -9,6 +9,5 @@ public class PowersubCoreApplication {
     public static void main(String[] args) {
         SpringApplication.run(PowersubCoreApplication.class, args);
     }
-
 }
-//testttе
+//test
