@@ -10,4 +10,3 @@ public class PowersubCoreApplication {
         SpringApplication.run(PowersubCoreApplication.class, args);
     }
 }
-//testj
