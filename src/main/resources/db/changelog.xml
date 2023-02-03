@@ -3,10 +3,10 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
-    <include file="db/changes/change_acc.sql"/>
-    <include file="db/changes/change_channels.sql"/>
-    <include file="db/changes/change_moders.sql"/>
-    <include file="db/changes/change_posts.sql"/>
-    <include file="db/changes/change_subscr.sql"/>
+    <include file="db/changes/change_acc_001.sql"/>
+    <include file="db/changes/change_channels_002.sql"/>
+    <include file="db/changes/change_moders_003.sql"/>
+    <include file="db/changes/change_posts_004.sql"/>
+    <include file="db/changes/change_subscr_005.sql"/>
 
 </databaseChangeLog>
