@@ -1,5 +1,7 @@
 package com.powersub.core.entity;
 
+import java.time.ZonedDateTime;
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,5 +25,8 @@ public class Account {
 
     @Column(name = "password")
     private String password;
+    
+    @Column(name = "created_at")
+    private ZonedDateTime createdAt;
 
 }
