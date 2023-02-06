@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS public.posts
     channel_id bigint NOT NULL,
     title character varying(256) COLLATE pg_catalog."default" NOT NULL,
     content text COLLATE pg_catalog."default" NOT NULL,
-    create_date timestamp without time zone NOT NULL,
+    create_date timestamp with time zone NOT NULL,
     CONSTRAINT posts_pkey PRIMARY KEY (post_id),
     CONSTRAINT post_to_acc FOREIGN KEY (post_id)
         REFERENCES public.accounts (account_id) MATCH SIMPLE
