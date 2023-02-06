@@ -2,6 +2,8 @@ package com.powersub.core.exception;
 
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-public class InvalidCredentialsException extends Exception {
+public class InvalidCredentialsException extends GlobalException {
+    public InvalidCredentialsException(String msg, String code) {
+        super(msg, code);
+    }
 }
