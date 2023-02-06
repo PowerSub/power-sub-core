@@ -21,4 +21,6 @@ spring:
       path: /api
 server:
   port: 9010
-
+springdoc:
+  api-docs:
+    path: /powersub-docs
