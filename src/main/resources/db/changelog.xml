@@ -8,5 +8,6 @@
     <include file="db/changes/change_moders_003.sql"/>
     <include file="db/changes/change_posts_004.sql"/>
     <include file="db/changes/change_subscr_005.sql"/>
+    <include file="db/changes/add_column_created_at_accounts_006.xml"/>
 
 </databaseChangeLog>
