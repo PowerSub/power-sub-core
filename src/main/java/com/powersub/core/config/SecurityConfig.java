@@ -22,14 +22,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable();
+        httpSecurity.httpBasic();
         httpSecurity.authorizeRequests().
-                antMatchers("/registration").permitAll();
-                /*.and()
-                .authorizeRequests()
-                .antMatchers("/smthgelse")
-                .authenticated();*/
+                antMatchers("/registration", "/login").
+                permitAll();
+        httpSecurity.formLogin().
+                loginPage("/login");
         return httpSecurity.build();
     }
-
 }
 

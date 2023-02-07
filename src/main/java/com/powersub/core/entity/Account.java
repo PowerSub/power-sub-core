@@ -1,10 +1,14 @@
 package com.powersub.core.entity;
 
-import java.time.ZonedDateTime;
-
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.Collection;
 
 @Entity
 @Getter
@@ -13,10 +17,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "accounts")
-public class Account {
+public class Account implements UserDetails {
 
     @Id
-    @Column(name="account_id")
+    @Column(name = "account_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
@@ -25,8 +29,36 @@ public class Account {
 
     @Column(name = "password")
     private String password;
-    
+
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
