@@ -2,6 +2,7 @@ package com.powersub.core.service;
 
 import com.powersub.core.entity.Account;
 import com.powersub.core.entity.AccountDTO;
+import com.powersub.core.exception.GenericExceptionCodes;
 import com.powersub.core.exception.InvalidCredentialsException;
 import com.powersub.core.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class RegistrationService {
                     build();
             accountRepository.save(acc);
         } else {
-            throw new InvalidCredentialsException();
+            throw new InvalidCredentialsException("Registration failed, wrong credentials", GenericExceptionCodes.BAD_REQUEST);
         }
     }
 

@@ -1,7 +1,6 @@
 package com.powersub.core.controller;
 
 import com.powersub.core.entity.AccountDTO;
-import com.powersub.core.exception.InvalidCredentialsException;
 import com.powersub.core.service.RegistrationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,13 +34,7 @@ public class RegistrationController {
                     })
     })
     @PostMapping("/registration")
-    public String getCredentials(@RequestBody AccountDTO account) {
-
-        try {
-            registrationService.register(account);
-            return "New account registered successfully";
-        } catch (InvalidCredentialsException e) {
-            return "Registration failed. Bad credentials!";
-        }
+    public void getCredentials(@RequestBody AccountDTO account) {
+        registrationService.register(account);
     }
 }

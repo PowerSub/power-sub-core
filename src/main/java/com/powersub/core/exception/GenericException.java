@@ -3,11 +3,11 @@ package com.powersub.core.exception;
 import lombok.Getter;
 
 @Getter
-public class GlobalException extends RuntimeException{
+public class GenericException extends RuntimeException {
 
     private final String code;
 
-    public GlobalException(String msg, String code) {
+    public GenericException(String msg, String code) {
         super(msg);
         this.code = code;
     }
