@@ -26,8 +26,6 @@ public class SecurityConfig {
         httpSecurity.authorizeRequests().
                 antMatchers("/registration", "/login").
                 permitAll();
-        httpSecurity.formLogin().
-                loginPage("/login");
         return httpSecurity.build();
     }
 }

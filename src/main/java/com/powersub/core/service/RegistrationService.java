@@ -35,17 +35,10 @@ public class RegistrationService {
     }
 
     private boolean isValidCredentials(AccountDTO account) {
-        boolean result = true;
-
-        if (accountRepository.findByEmail(account.getEmail()) != null
-                || !EmailValidator.getInstance().isValid(account.getEmail())
-                || account.getPassword().contains(" ")
-                || account.getPassword().length() < 8
-                || account.getPassword().length() > 64
-        ) {
-            result = false;
-        }
-
-        return result;
+        return accountRepository.findByEmail(account.getEmail()) == null
+                && EmailValidator.getInstance().isValid(account.getEmail())
+                && !account.getPassword().contains(" ")
+                && account.getPassword().length() >= 8
+                && account.getPassword().length() <= 64;
     }
 }
