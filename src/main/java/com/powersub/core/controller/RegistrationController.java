@@ -44,4 +44,9 @@ public class RegistrationController {
             return "Registration failed. Bad credentials!";
         }
     }
+
+    @PostMapping("/login")
+    public void authenticate(@RequestBody AccountDTO account) {
+
+    }
 }
