@@ -3,9 +3,9 @@ spring:
     name: powersub-core
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/powersub}
-    username: ${DB_USER:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: jdbc:postgresql://localhost:5432/ps_db
+    username: powersub
+    password: powersub@123
     hikari:
       maximum-pool-size: 10
       minimum-idle: 3
