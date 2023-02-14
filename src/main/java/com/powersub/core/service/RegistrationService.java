@@ -30,7 +30,7 @@ public class RegistrationService {
                     .build();
             accountRepository.save(acc);
         } else {
-            throw new InvalidCredentialsException();
+            throw new InvalidCredentialsException("Registration failed, wrong credentials");
         }
     }
 
