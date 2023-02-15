@@ -1,32 +1,63 @@
 package com.powersub.core.service;
 
-import com.powersub.core.entity.AccountDTO;
-import com.powersub.core.exception.InvalidCredentialsException;
-import com.powersub.core.repository.AccountRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.time.Clock;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+import java.time.Clock;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
+import com.powersub.core.entity.Account;
+import com.powersub.core.entity.AccountDTO;
+import com.powersub.core.exception.GenericExceptionCodes;
+import com.powersub.core.exception.InvalidCredentialsException;
+import com.powersub.core.repository.AccountRepository;
+
+@SpringJUnitConfig
 class RegistrationServiceTest {
-    @Mock
+    @MockBean
     AccountRepository accountRepository;
-    @Mock
+    @MockBean
     PasswordEncoder encoder;
 
-    @Test
-    void register() throws InvalidCredentialsException {
+    RegistrationService registrationService;
+
+    @BeforeEach
+    void setUp() {
         Clock clock2 = Clock.systemUTC();
+        registrationService = new RegistrationService(accountRepository, encoder, clock2);
+    }
+
+    @Test
+    void registerPositive() throws InvalidCredentialsException {
         AccountDTO correctAccountDTO = new AccountDTO("ffff@ya.ru", "hhhddddrew");
+        when(encoder.encode(correctAccountDTO.getPassword())).thenReturn("cryptoPassword");
+
+        registrationService.register(correctAccountDTO);
+        var accountArgumentCaptor = ArgumentCaptor.forClass(Account.class);
+
+
+        verify(accountRepository, Mockito.times(1)).save(accountArgumentCaptor.capture());
+
+        var value = accountArgumentCaptor.getValue();
+        assertNotNull(value);
+        assertEquals(correctAccountDTO.getEmail(), value.getEmail());
+        assertNotEquals(correctAccountDTO.getPassword(), value.getPassword());
+        assertEquals("cryptoPassword", value.getPassword());
+    }
+
+    @Test
+    void registerNegative() throws InvalidCredentialsException {
         AccountDTO incorrectAccountDTO1 = new AccountDTO("ffff@ya.ru", "hh hddddrew");
         AccountDTO incorrectAccountDTO2 = new AccountDTO("ffff@ya.ru", "hh");
         AccountDTO incorrectAccountDTO3 = new AccountDTO("ffff@ya.ru", "hhhhhhhhhhhhhhhh" +
@@ -34,28 +65,24 @@ class RegistrationServiceTest {
         AccountDTO incorrectAccountDTO4 = new AccountDTO("ffff@ya@ru", "hhhddddrew");
         AccountDTO incorrectAccountDTO5 = new AccountDTO("@ya.ru", "hhhddddrew");
 
+        var exception = Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> 
+            registrationService.register(incorrectAccountDTO1)
+        );
 
-        RegistrationService registrationService = new RegistrationService(accountRepository, encoder, clock2);
-        when(encoder.encode(correctAccountDTO.getPassword())).thenReturn("cryptoPassword");
+        assertEquals(GenericExceptionCodes.INVALID_CREDENTIALS, exception.getCode());
 
-        registrationService.register(correctAccountDTO);
-        verify(accountRepository, Mockito.times(1)).save(Mockito.any());
-
-        Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> {
-            registrationService.register(incorrectAccountDTO1);
-        });
-        Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> {
-            registrationService.register(incorrectAccountDTO2);
-        });
-        Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> {
-            registrationService.register(incorrectAccountDTO3);
-        });
-        Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> {
-            registrationService.register(incorrectAccountDTO4);
-        });
-        Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> {
-            registrationService.register(incorrectAccountDTO5);
-        });
+        Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> 
+            registrationService.register(incorrectAccountDTO2)
+        );
+        Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> 
+            registrationService.register(incorrectAccountDTO3)
+        );
+        Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> 
+            registrationService.register(incorrectAccountDTO4)
+        );
+        Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> 
+            registrationService.register(incorrectAccountDTO5)
+        );
     }
 
 }
