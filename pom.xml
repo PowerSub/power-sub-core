@@ -98,6 +98,12 @@
             <scope>test</scope>
         </dependency>
 
+<!--        Что бы работала валидация! После ознакомления можно удалить!-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
         <!-- swagger-->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
