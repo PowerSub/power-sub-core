@@ -33,7 +33,7 @@ public class Channel {
   private String description;
 
   @ManyToMany(mappedBy = "channelsSubscriber")
-  Set<Account> accountsSubscriber = new HashSet<>();
+  private Set<Account> accountsSubscriber = new HashSet<>();
 
   @Override
   public boolean equals(Object o) {

@@ -37,7 +37,7 @@ public class Account implements UserDetails {
           name = "subscribes",
           joinColumns = @JoinColumn(name = "account_id"),
           inverseJoinColumns = @JoinColumn(name = "channel_id"))
-  Set<Channel> channelsSubscriber = new HashSet<>(); //todo назвать нормально
+  private Set<Channel> channelsSubscriber = new HashSet<>(); //todo назвать нормально
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
