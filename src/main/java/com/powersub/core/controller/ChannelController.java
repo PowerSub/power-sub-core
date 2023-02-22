@@ -41,7 +41,6 @@ public class ChannelController {
             channelById.getDescription());
 
     return new ResponseEntity<>(channelDTO, HttpStatus.OK);
-
   }
 
   @PostMapping("/create-channel")
