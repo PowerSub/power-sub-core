@@ -15,6 +15,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Table(name = "accounts")
 public class Account implements UserDetails {
 
