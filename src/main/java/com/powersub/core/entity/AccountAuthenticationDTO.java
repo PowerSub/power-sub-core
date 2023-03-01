@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountDTO {
+public class AccountAuthenticationDTO {
 
     private String email;
 

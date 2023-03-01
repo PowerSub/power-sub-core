@@ -1,7 +1,7 @@
 package com.powersub.core.service;
 
 import com.powersub.core.entity.Account;
-import com.powersub.core.entity.AccountDTO;
+import com.powersub.core.entity.AccountAuthenticationDTO;
 import com.powersub.core.exception.InvalidCredentialsException;
 import com.powersub.core.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,19 +22,19 @@ public class RegistrationService {
 
     private final Clock clock;
 
-    public void register(AccountDTO account) throws InvalidCredentialsException {
+    public Account register(AccountAuthenticationDTO account) throws InvalidCredentialsException {
         if (isValidCredentials(account)) {
             Account acc = Account.builder()
                     .email(account.getEmail()).password(encoder.encode(account.getPassword()))
                     .createdAt(ZonedDateTime.now(clock))
                     .build();
-            accountRepository.save(acc);
+            return accountRepository.save(acc);
         } else {
             throw new InvalidCredentialsException("Registration failed, wrong credentials");
         }
     }
 
-    private boolean isValidCredentials(AccountDTO account) {
+    private boolean isValidCredentials(AccountAuthenticationDTO account) {
         return accountRepository.findByEmail(account.getEmail()) == null
                 && EmailValidator.getInstance().isValid(account.getEmail())
                 && !account.getPassword().contains(" ")

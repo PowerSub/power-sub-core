@@ -14,8 +14,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        //Для отправки запроса в Postman, если нужно засылать пароль
-        //return NoOpPasswordEncoder.getInstance();
         return new BCryptPasswordEncoder();
     }
 
@@ -23,9 +21,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable();
         httpSecurity.httpBasic();
-        httpSecurity.authorizeRequests().
-                antMatchers("/registration", "/login").
-                permitAll();
+        httpSecurity.authorizeRequests()
+                .antMatchers("/**/registration")
+                .permitAll()
+                .antMatchers("/**")
+                .authenticated();
         return httpSecurity.build();
     }
 }

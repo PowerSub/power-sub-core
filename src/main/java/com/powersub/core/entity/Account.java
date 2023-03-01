@@ -17,6 +17,7 @@ import java.util.*;
 @Builder
 @ToString
 @Table(name = "accounts")
+@EqualsAndHashCode(of = "id")
 public class Account implements UserDetails {
 
   @Id
@@ -33,16 +34,9 @@ public class Account implements UserDetails {
   @Column(name = "created_at")
   private ZonedDateTime createdAt;
 
-  @ManyToMany
-  @JoinTable(
-          name = "subscribes",
-          joinColumns = @JoinColumn(name = "account_id"),
-          inverseJoinColumns = @JoinColumn(name = "channel_id"))
-  private Set<Channel> channelsSubscriber = new HashSet<>(); //todo назвать нормально
-
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+    return List.of(new SimpleGrantedAuthority("ROLE_USER"));
   }
 
   public String getUsername() {
@@ -67,18 +61,5 @@ public class Account implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Account account = (Account) o;
-    return Objects.equals(email, account.email) && Objects.equals(password, account.password) && Objects.equals(createdAt, account.createdAt) && Objects.equals(channelsSubscriber, account.channelsSubscriber);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(email, password, createdAt, channelsSubscriber);
   }
 }

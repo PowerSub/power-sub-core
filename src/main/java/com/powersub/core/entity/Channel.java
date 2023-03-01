@@ -1,13 +1,24 @@
 package com.powersub.core.entity;
 
-import lombok.*;
+import java.time.ZonedDateTime;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -16,6 +27,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Table(name = "channels")
+@EqualsAndHashCode(of = "channelId")
 public class Channel {
 
   @Id
@@ -31,20 +43,12 @@ public class Channel {
   @Size(max = 1024)
   @Column(name = "description")
   private String description;
-
-  @ManyToMany(mappedBy = "channelsSubscriber")
-  private Set<Account> accountsSubscriber = new HashSet<>();
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Channel channel = (Channel) o;
-    return Objects.equals(title, channel.title) && Objects.equals(description, channel.description) && Objects.equals(accountsSubscriber, channel.accountsSubscriber);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(title, description, accountsSubscriber);
-  }
+  
+  @Column(name = "created_at")
+  private ZonedDateTime createdAt;
+  
+  @ManyToOne
+  @JoinColumn(name = "owner_id")
+  private Account owner;
+  
 }
