@@ -14,11 +14,11 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class ChannelDTO {
 
-  @NotEmpty
-  @Size(min = 2, max = 256)
-  private String title;
+    @NotEmpty
+    @Size(min = 2, max = 256)
+    private String title;
 
-  @Size(max = 1024)
-  private String description;
+    @Size(max = 1024)
+    private String description;
 
 }

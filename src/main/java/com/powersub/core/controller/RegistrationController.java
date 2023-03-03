@@ -18,9 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 public class RegistrationController {
 
-
     private final RegistrationService registrationService;
-
 
     @Autowired
     public RegistrationController(RegistrationService registrationService) {

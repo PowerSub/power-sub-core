@@ -1,18 +1,16 @@
 package com.powersub.core.service;
 
-import java.time.Clock;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import com.powersub.core.entity.Account;
 import com.powersub.core.entity.Channel;
 import com.powersub.core.entity.ChannelDTO;
 import com.powersub.core.repository.ChannelRepository;
-
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.Clock;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -31,7 +29,7 @@ public class ChannelService {
         return foundChannel.orElse(null);
     }
 
-    public void createChannel(ChannelDTO channel, Account account) {
+    public ChannelDTO createChannel(ChannelDTO channel, Account account) {
         Channel ch = Channel.builder()
                 .title(channel.getTitle())
                 .description(channel.getDescription())
@@ -39,15 +37,25 @@ public class ChannelService {
                 .createdAt(ZonedDateTime.now(clock))
                 .build();
 
-        channelRepository.save(ch);
+        Channel save = channelRepository.save(ch);
+
+        return new ChannelDTO(save.getTitle(),
+                save.getDescription());
+
     }
 
-    public Channel updateChannel(Long id, ChannelDTO channelDTO) {
-        //TODO owner validation (чтобы владелец мог менять только свой канал)
-        return channelRepository.findById(id).map(channel -> {
-            channel.setTitle(channelDTO.getTitle());
-            channel.setDescription(channelDTO.getDescription());
-            return channelRepository.save(channel);
+    public Channel updateChannel(Long id, ChannelDTO channelDTO, Account account) {
+        Optional<Channel> channelById = channelRepository.findById(id);
+
+        return channelById.map(channel -> {
+            if (account.getId() == channelById.get().getOwner().getId()) {
+                channel.setTitle(channelDTO.getTitle());
+                channel.setDescription(channelDTO.getDescription());
+                channel.setCreatedAt(ZonedDateTime.now());
+                return channelRepository.save(channel);
+            } else {
+               return null;
+            }
         }).orElse(null);
     }
 }
