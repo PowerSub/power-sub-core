@@ -54,7 +54,7 @@ public class ChannelService {
                 channel.setCreatedAt(ZonedDateTime.now());
                 return channelRepository.save(channel);
             } else {
-               return null;
+                return null;
             }
         }).orElse(null);
     }
