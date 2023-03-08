@@ -20,7 +20,6 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
-//@RunWith(SpringRunner.class) - todo почему не запускается.
 public class ChannelServiceTest {
 
     @InjectMocks

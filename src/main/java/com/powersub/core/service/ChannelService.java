@@ -3,6 +3,7 @@ package com.powersub.core.service;
 import com.powersub.core.entity.Account;
 import com.powersub.core.entity.Channel;
 import com.powersub.core.entity.ChannelDTO;
+import com.powersub.core.exception.InvalidCredentialsException;
 import com.powersub.core.repository.ChannelRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,16 +25,16 @@ public class ChannelService {
     }
 
     public Channel getChannelById(Long id) {
-
+        // todo спросить про синтаксис () -> new Exception
         Optional<Channel> foundChannel = channelRepository.findById(id);
-        return foundChannel.orElse(null);
+        return foundChannel.orElseThrow(() -> new InvalidCredentialsException("This channel does not exist"));
     }
 
-    public ChannelDTO createChannel(ChannelDTO channel, Account account) {
+    public ChannelDTO createChannel(ChannelDTO channelDTO, Account authAccount) {
         Channel ch = Channel.builder()
-                .title(channel.getTitle())
-                .description(channel.getDescription())
-                .owner(account)
+                .title(channelDTO.getTitle())
+                .description(channelDTO.getDescription())
+                .owner(authAccount)
                 .createdAt(ZonedDateTime.now(clock))
                 .build();
 
@@ -51,11 +52,10 @@ public class ChannelService {
             if (account.getId() == channelById.get().getOwner().getId()) {
                 channel.setTitle(channelDTO.getTitle());
                 channel.setDescription(channelDTO.getDescription());
-                channel.setCreatedAt(ZonedDateTime.now());
                 return channelRepository.save(channel);
             } else {
-                return null;
+                throw new InvalidCredentialsException("Update failed, permission denied");
             }
-        }).orElse(null);
+        }).orElseThrow(() -> new InvalidCredentialsException("This channel does not exist"));
     }
 }
