@@ -1,35 +1,31 @@
 package com.powersub.core.service;
 
-import com.powersub.core.entity.Account;
-import com.powersub.core.entity.Channel;
-import com.powersub.core.entity.ChannelDTO;
-import com.powersub.core.repository.ChannelRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-@SpringBootTest
-public class ChannelServiceTest {
+import com.powersub.core.entity.Account;
+import com.powersub.core.entity.Channel;
+import com.powersub.core.entity.ChannelDTO;
+import com.powersub.core.repository.ChannelRepository;
 
-    @InjectMocks
-    @Autowired
+@SpringJUnitConfig
+class ChannelServiceTest {
+
     ChannelService channelService;
 
     @MockBean
     ChannelRepository channelRepository;
-    @Autowired
-    Clock clock;
 
     private static Account createAccount() {
         return new Account(1,
@@ -50,9 +46,15 @@ public class ChannelServiceTest {
         return new ChannelDTO("test", "description test");
     }
 
+    @BeforeEach
+    void before() {
+        Clock clock = Clock.systemUTC();
+        channelService = new ChannelService(channelRepository, clock);
+    }
+
     @Test
     void whenCreateChannel_thenSuccess() {
-        Mockito.when(channelRepository.save(any(Channel.class))) //todo почему нельзя вставить метод createChannel()
+        when(channelRepository.save(any(Channel.class))) //todo почему нельзя вставить метод createChannel()
                 .thenReturn(createChannel());
         ChannelDTO input = createChannelDTO();
         ChannelDTO output = channelService.createChannel(input, createAccount());
@@ -62,7 +64,7 @@ public class ChannelServiceTest {
 
     @Test
     void whenGetAllChannels_thenSuccess() {
-        Mockito.when(channelRepository.findAll())
+        when(channelRepository.findAll())
                 .thenReturn(List.of(createChannel()));
         List<Channel> channels = channelService.getChannels();
         Assertions.assertNotNull(channels);
@@ -71,7 +73,7 @@ public class ChannelServiceTest {
 
     @Test
     void whenGetIdChannel_thenSuccess() {
-        Mockito.when(channelRepository.findById(any()))
+        when(channelRepository.findById(any()))
                 .thenReturn(Optional.of(createChannel()));
         Channel channelById = channelService.getChannelById(1L);
         Assertions.assertNotNull(channelById);
@@ -81,11 +83,11 @@ public class ChannelServiceTest {
     @Test
     void whenUpdateChannel_thenSuccess() {
         //todo тест не проходил. Null
-        Mockito.when(channelRepository.findById(1L))
+        when(channelRepository.findById(1L))
                 .thenReturn(Optional.of(createChannel()));
 
-//        Mockito.when(channelRepository.save(createChannel()))
-//                .thenReturn(createChannel());
+        when(channelRepository.save(createChannel()))
+                .thenReturn(createChannel());
 
         Channel updateChannel = channelService.updateChannel(1L,
                 new ChannelDTO("tttt", "rfefsdv"),
