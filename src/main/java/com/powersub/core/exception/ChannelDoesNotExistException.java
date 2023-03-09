@@ -1,5 +1,6 @@
 package com.powersub.core.exception;
 
+
 public class ChannelDoesNotExistException extends GenericException {
 
     public ChannelDoesNotExistException(String msg) {
