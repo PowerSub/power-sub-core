@@ -82,7 +82,6 @@ class ChannelServiceTest {
 
     @Test
     void whenUpdateChannel_thenSuccess() {
-        //todo тест не проходил. Null
         when(channelRepository.findById(1L))
                 .thenReturn(Optional.of(createChannel()));
 

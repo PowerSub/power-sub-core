@@ -3,7 +3,8 @@ package com.powersub.core.service;
 import com.powersub.core.entity.Account;
 import com.powersub.core.entity.Channel;
 import com.powersub.core.entity.ChannelDTO;
-import com.powersub.core.exception.InvalidCredentialsException;
+import com.powersub.core.exception.ChannelDoesNotExistException;
+import com.powersub.core.exception.InvalidChannelPermissionException;
 import com.powersub.core.repository.ChannelRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,8 @@ public class ChannelService {
     }
 
     public Channel getChannelById(Long id) {
-        // todo спросить про синтаксис () -> new Exception
         Optional<Channel> foundChannel = channelRepository.findById(id);
-        return foundChannel.orElseThrow(() -> new InvalidCredentialsException("This channel does not exist"));
+        return foundChannel.orElseThrow(() -> new ChannelDoesNotExistException("This channel does not exist"));
     }
 
     public ChannelDTO createChannel(ChannelDTO channelDTO, Account authAccount) {
@@ -54,8 +54,8 @@ public class ChannelService {
                 channel.setDescription(channelDTO.getDescription());
                 return channelRepository.save(channel);
             } else {
-                throw new InvalidCredentialsException("Update failed, permission denied");
+                throw new InvalidChannelPermissionException("Update failed, permission denied");
             }
-        }).orElseThrow(() -> new InvalidCredentialsException("This channel does not exist"));
+        }).orElseThrow(() -> new ChannelDoesNotExistException("This channel does not exist"));
     }
 }
