@@ -16,7 +16,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import com.powersub.core.entity.AccountDTO;
+import com.powersub.core.entity.AccountAuthenticationDTO;
 import com.powersub.core.repository.AccountRepository;
 import com.powersub.core.service.RegistrationService;
 
@@ -38,7 +38,7 @@ class PowersubCoreApplicationTests {
     void contextLoads() {
         var account = repository.findByEmail("aaa@aaa.ru");
         assertNull(account);
-        registrationService.register(new AccountDTO("aaa@aaa.ru", "password"));
+        registrationService.register(new AccountAuthenticationDTO("aaa@aaa.ru", "password"));
         account = repository.findByEmail("aaa@aaa.ru");
         assertNotNull(account);
         assertEquals("aaa@aaa.ru", account.getEmail());

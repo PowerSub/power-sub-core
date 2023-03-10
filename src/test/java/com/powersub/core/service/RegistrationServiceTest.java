@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import com.powersub.core.entity.Account;
-import com.powersub.core.entity.AccountDTO;
+import com.powersub.core.entity.AccountAuthenticationDTO;
 import com.powersub.core.exception.GenericExceptionCodes;
 import com.powersub.core.exception.InvalidCredentialsException;
 import com.powersub.core.repository.AccountRepository;
@@ -40,10 +40,10 @@ class RegistrationServiceTest {
 
     @Test
     void registerPositive() throws InvalidCredentialsException {
-        AccountDTO correctAccountDTO = new AccountDTO("ffff@ya.ru", "hhhddddrew");
-        when(encoder.encode(correctAccountDTO.getPassword())).thenReturn("cryptoPassword");
+        AccountAuthenticationDTO correctAccountAuthenticationDTO = new AccountAuthenticationDTO("ffff@ya.ru", "hhhddddrew");
+        when(encoder.encode(correctAccountAuthenticationDTO.getPassword())).thenReturn("cryptoPassword");
 
-        registrationService.register(correctAccountDTO);
+        registrationService.register(correctAccountAuthenticationDTO);
         var accountArgumentCaptor = ArgumentCaptor.forClass(Account.class);
 
 
@@ -51,37 +51,37 @@ class RegistrationServiceTest {
 
         var value = accountArgumentCaptor.getValue();
         assertNotNull(value);
-        assertEquals(correctAccountDTO.getEmail(), value.getEmail());
-        assertNotEquals(correctAccountDTO.getPassword(), value.getPassword());
+        assertEquals(correctAccountAuthenticationDTO.getEmail(), value.getEmail());
+        assertNotEquals(correctAccountAuthenticationDTO.getPassword(), value.getPassword());
         assertEquals("cryptoPassword", value.getPassword());
     }
 
     @Test
     void registerNegative() throws InvalidCredentialsException {
-        AccountDTO incorrectAccountDTO1 = new AccountDTO("ffff@ya.ru", "hh hddddrew");
-        AccountDTO incorrectAccountDTO2 = new AccountDTO("ffff@ya.ru", "hh");
-        AccountDTO incorrectAccountDTO3 = new AccountDTO("ffff@ya.ru", "hhhhhhhhhhhhhhhh" +
+        AccountAuthenticationDTO incorrectAccountAuthenticationDTO1 = new AccountAuthenticationDTO("ffff@ya.ru", "hh hddddrew");
+        AccountAuthenticationDTO incorrectAccountAuthenticationDTO2 = new AccountAuthenticationDTO("ffff@ya.ru", "hh");
+        AccountAuthenticationDTO incorrectAccountAuthenticationDTO3 = new AccountAuthenticationDTO("ffff@ya.ru", "hhhhhhhhhhhhhhhh" +
                 "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-        AccountDTO incorrectAccountDTO4 = new AccountDTO("ffff@ya@ru", "hhhddddrew");
-        AccountDTO incorrectAccountDTO5 = new AccountDTO("@ya.ru", "hhhddddrew");
+        AccountAuthenticationDTO incorrectAccountAuthenticationDTO4 = new AccountAuthenticationDTO("ffff@ya@ru", "hhhddddrew");
+        AccountAuthenticationDTO incorrectAccountAuthenticationDTO5 = new AccountAuthenticationDTO("@ya.ru", "hhhddddrew");
 
         var exception = Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> 
-            registrationService.register(incorrectAccountDTO1)
+            registrationService.register(incorrectAccountAuthenticationDTO1)
         );
 
         assertEquals(GenericExceptionCodes.INVALID_CREDENTIALS, exception.getCode());
 
         Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> 
-            registrationService.register(incorrectAccountDTO2)
+            registrationService.register(incorrectAccountAuthenticationDTO2)
         );
         Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> 
-            registrationService.register(incorrectAccountDTO3)
+            registrationService.register(incorrectAccountAuthenticationDTO3)
         );
         Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> 
-            registrationService.register(incorrectAccountDTO4)
+            registrationService.register(incorrectAccountAuthenticationDTO4)
         );
         Assertions.assertThrowsExactly(InvalidCredentialsException.class, () -> 
-            registrationService.register(incorrectAccountDTO5)
+            registrationService.register(incorrectAccountAuthenticationDTO5)
         );
     }
 

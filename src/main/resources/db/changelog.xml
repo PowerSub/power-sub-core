@@ -9,5 +9,6 @@
     <include file="db/changes/change_posts_004.sql"/>
     <include file="db/changes/change_subscr_005.sql"/>
     <include file="db/changes/add_column_created_at_accounts_006.xml"/>
+    <include file="db/changes/add_owner_created_date_to_channels_007.xml"/>
 
 </databaseChangeLog>

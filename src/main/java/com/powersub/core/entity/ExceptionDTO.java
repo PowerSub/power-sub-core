@@ -1,7 +1,10 @@
 package com.powersub.core.entity;
 
 import com.powersub.core.exception.GenericExceptionCodes;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -10,6 +13,6 @@ import lombok.*;
 public class ExceptionDTO {
 
     private GenericExceptionCodes code;
-    private  String msg;
+    private String msg;
 
 }

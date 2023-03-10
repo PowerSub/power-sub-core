@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,6 +18,7 @@ import java.util.Collection;
 @Builder
 @ToString
 @Table(name = "accounts")
+@EqualsAndHashCode(of = "id")
 public class Account implements UserDetails {
 
     @Id
@@ -36,7 +37,7 @@ public class Account implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     public String getUsername() {

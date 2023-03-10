@@ -1,12 +1,14 @@
 package com.powersub.core.controller;
 
-import com.powersub.core.entity.AccountDTO;
+import com.powersub.core.entity.Account;
+import com.powersub.core.entity.AccountAuthenticationDTO;
 import com.powersub.core.service.RegistrationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,9 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegistrationController {
 
-
     private final RegistrationService registrationService;
-
 
     @Autowired
     public RegistrationController(RegistrationService registrationService) {
@@ -34,12 +34,12 @@ public class RegistrationController {
                     })
     })
     @PostMapping("/registration")
-    public void getCredentials(@RequestBody AccountDTO account) {
-        registrationService.register(account);
+    public Account getCredentials(@RequestBody AccountAuthenticationDTO account) {
+        return registrationService.register(account);
     }
 
     @PostMapping("/login")
-    public void authenticate(@RequestBody AccountDTO account) {
-
+    public Account authenticate(@AuthenticationPrincipal Account account) {
+        return account;
     }
 }
