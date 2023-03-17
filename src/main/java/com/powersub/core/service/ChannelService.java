@@ -31,6 +31,7 @@ public class ChannelService {
     }
 
     public ChannelDTO createChannel(ChannelDTO channelDTO, Account authAccount) {
+      //todo return Channel.class
         Channel ch = Channel.builder()
                 .title(channelDTO.getTitle())
                 .description(channelDTO.getDescription())

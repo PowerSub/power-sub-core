@@ -14,6 +14,6 @@ public class ProfileService {
     ChannelRepository channelRepository;
 
     public Set<Channel> getAll(long id) {
-       return channelRepository.findChannelsBySubscribersId(id);
+       return channelRepository.findChannelsBySubscribersId(id); //todo помоему ненужный метод
     }
 }
