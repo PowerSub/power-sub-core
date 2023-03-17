@@ -8,7 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -34,6 +36,13 @@ public class Account implements UserDetails {
 
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    @JoinTable(name = "subscribes",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "channel_id"))
+    private Set<Channel> channels = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
