@@ -17,7 +17,6 @@ public class SubscribeService {
 
     private final ChannelRepository channelRepository;
 
-
     public String addSubscriber(Long id, Account account) {
         Channel channel = channelRepository
                 .findById(id)

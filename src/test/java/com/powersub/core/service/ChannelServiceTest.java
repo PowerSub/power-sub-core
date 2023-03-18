@@ -1,28 +1,31 @@
 package com.powersub.core.service;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
-import java.time.Clock;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-
+import com.powersub.core.entity.Account;
+import com.powersub.core.entity.Channel;
+import com.powersub.core.entity.ChannelDTO;
+import com.powersub.core.repository.ChannelRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import com.powersub.core.entity.Account;
-import com.powersub.core.entity.Channel;
-import com.powersub.core.entity.ChannelDTO;
-import com.powersub.core.repository.ChannelRepository;
+import java.time.Clock;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @SpringJUnitConfig
 class ChannelServiceTest {
 
     ChannelService channelService;
+    private static final Set<Account> SUBSCRIBERS = new HashSet<>();
+    private static final Set<Channel> CHANNELS = new HashSet<>();
 
     @MockBean
     ChannelRepository channelRepository;
@@ -31,7 +34,8 @@ class ChannelServiceTest {
         return new Account(1,
                 "test@email.com",
                 "12345678",
-                ZonedDateTime.now());
+                ZonedDateTime.now(),
+                CHANNELS);
     }
 
     private static Channel createChannel() {
@@ -39,7 +43,9 @@ class ChannelServiceTest {
                 "test",
                 "description test",
                 ZonedDateTime.now(),
-                createAccount());
+                createAccount(),
+                SUBSCRIBERS
+        );
     }
 
     private static ChannelDTO createChannelDTO() {
