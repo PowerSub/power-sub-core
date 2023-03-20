@@ -57,7 +57,7 @@ class ChannelServiceTest {
         when(channelRepository.save(any(Channel.class))) //todo почему нельзя вставить метод createChannel()
                 .thenReturn(createChannel());
         ChannelDTO input = createChannelDTO();
-        ChannelDTO output = channelService.createChannel(input, createAccount());
+        Channel output = channelService.createChannel(input, createAccount());
         Assertions.assertNotNull(output);
         Assertions.assertEquals(input.getTitle(), output.getTitle());
     }
