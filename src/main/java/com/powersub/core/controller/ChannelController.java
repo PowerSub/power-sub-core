@@ -4,6 +4,7 @@ import com.powersub.core.entity.Account;
 import com.powersub.core.entity.Channel;
 import com.powersub.core.entity.ChannelDTO;
 import com.powersub.core.service.ChannelService;
+import com.powersub.core.service.SubscribeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,6 +23,8 @@ import java.util.List;
 public class ChannelController {
 
     private final ChannelService channelService;
+
+    private final SubscribeService subscribeService;
 
     @Operation(summary = "Return all channels", tags = "channels")
     @ApiResponses(value = {
@@ -98,4 +101,12 @@ public class ChannelController {
         return new ChannelDTO(channel.getTitle(),
                 channel.getDescription());
     }
+
+    @PostMapping("/subscribe/{id}") //todo проверить возможность изменить путь на {id} как и у гет запроса
+    public String subscribe(@PathVariable Long id,
+                            @AuthenticationPrincipal Account account) {
+        return subscribeService.addSubscriber(id, account);
+
+    }
+
 }

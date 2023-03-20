@@ -1,24 +1,13 @@
 package com.powersub.core.entity;
 
-import java.time.ZonedDateTime;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,25 +19,29 @@ import lombok.Setter;
 @EqualsAndHashCode(of = "channelId")
 public class Channel {
 
-  @Id
-  @Column(name = "channel_id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long channelId;
+    @Id
+    @Column(name = "channel_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long channelId;
 
-  @NotEmpty
-  @Size(min = 3, max = 256)
-  @Column(name = "title")
-  private String title;
+    @NotEmpty
+    @Size(min = 3, max = 256)
+    @Column(name = "title")
+    private String title;
 
-  @Size(max = 1024)
-  @Column(name = "description")
-  private String description;
-  
-  @Column(name = "created_at")
-  private ZonedDateTime createdAt;
-  
-  @ManyToOne
-  @JoinColumn(name = "owner_id")
-  private Account owner;
-  
+    @Size(max = 1024)
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "created_at")
+    private ZonedDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Account owner;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "channels")
+    private Set<Account> subscribers = new HashSet<>();
 }
