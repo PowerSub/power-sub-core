@@ -30,7 +30,7 @@ public class ChannelService {
         return foundChannel.orElseThrow(() -> new ChannelDoesNotExistException("This channel does not exist"));
     }
 
-    public ChannelDTO createChannel(ChannelDTO channelDTO, Account authAccount) {
+    public Channel createChannel(ChannelDTO channelDTO, Account authAccount) {
         Channel ch = Channel.builder()
                 .title(channelDTO.getTitle())
                 .description(channelDTO.getDescription())
@@ -38,11 +38,7 @@ public class ChannelService {
                 .createdAt(ZonedDateTime.now(clock))
                 .build();
 
-        Channel save = channelRepository.save(ch);
-
-        return new ChannelDTO(save.getTitle(),
-                save.getDescription());
-
+        return channelRepository.save(ch);
     }
 
     public Channel updateChannel(Long id, ChannelDTO channelDTO, Account account) {
